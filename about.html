@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About – Kelveris Technologies</title>
+  <link rel="stylesheet" href="skeu.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="skeu-navbar">
+  <a class="navbar-brand" href="index.html">
+    <img src="logo.jpeg" alt="Kelveris Logo">
+    KELVERIS <span>TECHNOLOGIES</span>
+  </a>
+  <button class="navbar-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
+    <i class="fas fa-bars"></i>
+  </button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="project.html">Projects</a></li>
+    <li><a href="service.html">Services</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<section style="background:var(--panel-grad); padding:110px 0 50px; position:relative; overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(46,64,112,0.15) 1px,transparent 1px),linear-gradient(90deg,rgba(46,64,112,0.15) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;"></div>
+  <div class="container text-center" style="position:relative;z-index:2;">
+    <span class="section-label" style="color:var(--amber-glow);">// Who We Are</span>
+    <h1 class="section-title section-title-center" style="color:var(--metal-light); text-shadow:2px 2px 0 rgba(0,0,0,0.4);">About Us</h1>
+  </div>
+</section>
+
+<div class="plate-divider"></div>
+
+<!-- ABOUT SECTION -->
+<section class="skeu-section" style="background:var(--cream);">
+  <div class="container">
+    <div class="row gap-3" style="align-items:flex-start;">
+
+      <!-- Left: about text -->
+      <div class="col-2 mb-4">
+        <div class="about-panel">
+          <span class="section-label">// Our Mission</span>
+          <h2 class="section-title" style="margin-bottom:1.5rem;">Passionate<br>About Hardware</h2>
+          <p>We are a dedicated team specialising in <strong>Hardware, IoT, and Embedded Systems</strong>, delivering innovative solutions for academic projects and real-world applications.</p>
+          <p style="margin-top:1rem;">From smart automation to robotics and sensor-based systems, our focus is on <strong>practical hardware implementations</strong> combined with software intelligence. With strong expertise in microcontrollers, PCB design, and system integration, we help students and businesses turn their ideas into working prototypes.</p>
+
+          <ul class="check-list mt-3">
+            <li><i class="fas fa-check-circle"></i> 50+ Hardware Projects Delivered</li>
+            <li><i class="fas fa-check-circle"></i> IoT &amp; Embedded Systems Expertise</li>
+            <li><i class="fas fa-check-circle"></i> End-to-End Prototype Solutions</li>
+            <li><i class="fas fa-check-circle"></i> Collaborative Team of Specialists</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right: team -->
+      <div class="col-2 mb-4">
+        <div style="background:var(--panel-grad); border-radius:14px; border:2px solid var(--navy-mid); padding:2rem; box-shadow:var(--shadow-deep);">
+          <span class="section-label" style="color:var(--amber-glow);">// The People</span>
+          <h3 style="font-family:'Oswald',sans-serif;font-size:1.4rem;color:var(--metal-light);letter-spacing:1px;text-transform:uppercase;margin-bottom:1.5rem;text-shadow:1px 1px 0 rgba(0,0,0,0.4);">Our Team</h3>
+
+          <div class="row gap-2">
+            <div class="col-2 mb-2">
+              <div class="team-card">
+                <i class="fas fa-user-cog"></i>
+                <h6>Gangadhar Bhagathi</h6>
+              </div>
+            </div>
+            <div class="col-2 mb-2">
+              <div class="team-card">
+                <i class="fas fa-user-cog"></i>
+                <h6>Teja Srinivas Ande</h6>
+              </div>
+            </div>
+            <div class="col-2 mb-2">
+              <div class="team-card">
+                <i class="fas fa-user-cog"></i>
+                <h6>Srilakshmi Abburi</h6>
+              </div>
+            </div>
+            <div class="col-2 mb-2">
+              <div class="team-card">
+                <i class="fas fa-user-cog"></i>
+                <h6>Srilatha Abburi</h6>
+              </div>
+            </div>
+            <div class="col-2 mb-2">
+              <div class="team-card">
+                <i class="fas fa-user-cog"></i>
+                <h6>Meghana Bollineni</h6>
+              </div>
+            </div>
+            <div class="col-2 mb-2">
+              <div class="team-card">
+                <i class="fas fa-user-cog"></i>
+                <h6>Geeshpath Kanatham</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="skeu-footer">
+  <div class="container">
+    <div class="row gap-3">
+      <div class="col-3 mb-4">
+        <h5>Kelveris</h5>
+        <p>Building custom solutions for students, startups, and businesses.</p>
+        <div class="footer-social mt-2">
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="col-4 mb-4">
+        <h6>Quick Links</h6>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="project.html">Projects</a></li>
+          <li><a href="service.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-3 mb-4">
+        <h6>Contact</h6>
+        <p><i class="fas fa-envelope" style="margin-right:6px;color:var(--amber);"></i> gangadharbugathi@gmail.com</p>
+        <p style="margin-top:6px;"><i class="fas fa-phone" style="margin-right:6px;color:var(--amber);"></i> +91 9398112830</p>
+        <p style="margin-top:6px;"><i class="fas fa-map-marker-alt" style="margin-right:6px;color:var(--amber);"></i> Guntur, AP</p>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <p class="footer-copy">© 2025 Kelveris Technologies. All rights reserved.</p>
+  </div>
+</footer>
+
+<a href="https://wa.me/919398112830" class="float-wa" target="_blank">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+</body>
+</html>
