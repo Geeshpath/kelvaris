@@ -3,222 +3,1733 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kelveris Technologies – Innovate. Build. Elevate.</title>
+  <title>Kelvaris Technologies – Innovate. Build. Elevate.</title>
+  <meta name="description" content="Kelvaris Technologies — custom IoT, embedded systems, drones, agriculture devices, ML, deep learning, and web application solutions for students, startups, and businesses.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono:wght@400&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- Skeuomorphic design system -->
   <link rel="stylesheet" href="skeu.css">
   <link rel="stylesheet" href="skeu-3d.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+    /* =============================================
+       SPA PAGE SYSTEM
+       All pages are <div class="page"> elements.
+       Only one has .page-active at a time.
+       ============================================= */
+    .page {
+      display: none;
+      animation: page-in 0.35s ease forwards;
+    }
+    .page-active {
+      display: block;
+    }
+    @keyframes page-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =============================================
+       HOME-ONLY: hero needs full-viewport height
+       ============================================= */
+    #page-home .skeu-hero {
+      min-height: 100vh;
+    }
+
+    /* =============================================
+       PROJECT CARDS – modal styles
+       ============================================= */
+    .proj-img {
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--panel-grad);
+      border-bottom: 2px solid var(--metal-deep);
+      font-size: 2.8rem;
+      color: var(--amber-glow);
+      text-shadow: 0 0 20px rgba(245,166,35,0.5);
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+    }
+    .skeu-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.78);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .skeu-modal-overlay.open { display: flex; }
+    .skeu-modal {
+      background: var(--metal-grad);
+      border-radius: 14px;
+      border: 2px solid var(--metal-dark);
+      box-shadow: var(--shadow-deep);
+      max-width: 680px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      background: var(--panel-grad);
+      border-radius: 12px 12px 0 0;
+      border-bottom: 2px solid var(--metal-deep);
+      padding: 1.1rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-header h5 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--amber-glow);
+      margin: 0;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--metal-mid);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: color 0.15s;
+    }
+    .modal-close:hover { color: var(--amber-glow); }
+    .modal-body {
+      padding: 1.4rem;
+      font-family: 'Lora', serif;
+      color: var(--navy);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    /* =============================================
+       HERO TAGLINE HIGHLIGHT
+       ============================================= */
+    .skeu-hero .hero-text em {
+      font-style: normal;
+      color: var(--amber-glow);
+      text-shadow: 0 0 22px rgba(245,166,35,0.5);
+    }
+
+    /* =============================================
+       HOME STATS: make the hero+stats look clean
+       without the big services/contact blocks
+       ============================================= */
+    .home-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+    .home-feature-card {
+      background: var(--panel-grad);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 1.1rem 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .home-feature-card:hover {
+      border-color: var(--amber);
+      background: rgba(255,255,255,0.04);
+      transform: translateY(-3px);
+    }
+    .home-feature-card i {
+      font-size: 1.6rem;
+      color: var(--amber-glow);
+      text-shadow: 0 0 10px rgba(245,166,35,0.5);
+      width: 36px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .home-feature-card h6 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--metal-light);
+      margin: 0 0 2px;
+    }
+    .home-feature-card p {
+      font-family: 'Lora', serif;
+      font-size: 0.72rem;
+      color: var(--metal-mid);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* =============================================
+       TRUSTED BY / CTA STRIP ON HOME
+       ============================================= */
+    .home-cta-strip {
+      background: var(--navy-grad);
+      padding: 50px 0;
+      text-align: center;
+      border-top: 2px solid var(--metal-deep);
+      border-bottom: 2px solid var(--metal-deep);
+    }
+    .home-cta-strip h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.8rem;
+      color: var(--metal-light);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+    }
+    .home-cta-strip p {
+      font-family: 'Lora', serif;
+      color: var(--metal-mid);
+      max-width: 460px;
+      margin: 0 auto 1.6rem;
+      font-size: 0.9rem;
+    }
+
+    /* =============================================
+       SERVICE CARDS — icon badge color per category
+       ============================================= */
+    .card-icon-panel.color-blue  { background: linear-gradient(160deg,#0d2240,#1a3660); }
+    .card-icon-panel.color-teal  { background: linear-gradient(160deg,#0a2030,#0d3545); }
+    .card-icon-panel.color-green { background: linear-gradient(160deg,#0a2218,#0d3520); }
+    .card-icon-panel.color-amber { background: linear-gradient(160deg,#261508,#3a2008); }
+    .card-icon-panel.color-violet{ background: linear-gradient(160deg,#1a0d35,#281450); }
+    .card-icon-panel.color-red   { background: linear-gradient(160deg,#2a0808,#3d0c0c); }
+
+    .card-icon-panel.color-blue i  { color: #38bdf8; text-shadow: 0 0 18px rgba(56,189,248,0.6); }
+    .card-icon-panel.color-teal i  { color: #2dd4bf; text-shadow: 0 0 18px rgba(45,212,191,0.6); }
+    .card-icon-panel.color-green i { color: #4ade80; text-shadow: 0 0 18px rgba(74,222,128,0.6); }
+    .card-icon-panel.color-amber i { color: #f5a623; text-shadow: 0 0 18px rgba(245,166,35,0.6); }
+    .card-icon-panel.color-violet i{ color: #a78bfa; text-shadow: 0 0 18px rgba(167,139,250,0.6); }
+    .card-icon-panel.color-red i   { color: #f87171; text-shadow: 0 0 18px rgba(248,113,113,0.6); }
+
+    /* =============================================
+       MOBILE RESPONSIVE EXTRAS
+       ============================================= */
+    @media (max-width: 640px) {
+      .home-feature-grid { grid-template-columns: 1fr; }
+      .col-3 { width: 50%; }
+    }
+    @media (max-width: 420px) {
+      .col-3 { width: 100%; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="skeu-navbar">
-  <a class="navbar-brand" href="index.html">
-    <img src="logo.jpeg" alt="Kelveris Logo">
-    KELVERIS <span>TECHNOLOGIES</span>
+<!-- ═══════════════════════════════════════════
+     NAVBAR  (shared across all pages)
+════════════════════════════════════════════════ -->
+<nav class="skeu-navbar" id="mainNav">
+  <a class="navbar-brand" href="#" onclick="navigate('home');return false;">
+    <img src="logo.png" alt="Kelvaris Logo">
+    KELVARIS <span>TECHNOLOGIES</span>
   </a>
-  <button class="navbar-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
-    <i class="fas fa-bars"></i>
+  <button class="navbar-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu" id="menuToggle">
+    <i class="fas fa-bars" id="menuIcon"></i>
   </button>
-  <ul class="nav-links">
-    <li><a href="index.html" class="active">Home</a></li>
-    <li><a href="project.html">Projects</a></li>
-    <li><a href="service.html">Services</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html">Contact</a></li>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" onclick="navigate('home');return false;" data-page="home" class="active">Home</a></li>
+    <li><a href="#" onclick="navigate('projects');return false;" data-page="project">Projects</a></li>
+    <li><a href="#" onclick="navigate('services');return false;" data-page="services">Services</a></li>
+    <li><a href="#" onclick="navigate('about');return false;" data-page="about">About</a></li>
+    <li><a href="#" onclick="navigate('contact');return false;" data-page="contact">Contact</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
-<section class="skeu-hero" id="home">
-  <div class="corner-br"></div>
-  <div class="hero-inner">
-    <div class="hero-text">
-      <span class="tagline">// Innovate · Build · Elevate</span>
-      <h1>Building Custom <em>Software &amp; Projects</em></h1>
-      <p>For students, startups, and businesses — IoT applications, embedded systems, web development, and academic projects.</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <a href="project.html" class="btn-skeu btn-skeu-primary">View Our Work</a>
-        <a href="contact.html" class="btn-skeu btn-skeu-outline">Hire Us</a>
-      </div>
-    </div>
-    <div>
-      <div class="hero-logo-panel" data-tilt id="heroTiltPanel">
-        <img src="logo.jpeg" alt="Kelveris Technologies">
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- STATS -->
-<div class="stats-strip">
-  <div class="stats-grid">
-    <div class="stat-item">
-      <span class="stat-number">50+</span>
-      <div class="stat-label">Projects Completed</div>
+<!-- ═══════════════════════════════════════════
+     PAGE: HOME
+════════════════════════════════════════════════ -->
+<div id="page-home" class="page page-active">
+
+  <!-- HERO -->
+  <section class="skeu-hero" id="home">
+    <div class="corner-br"></div>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <span class="tagline">// Innovate · Build · Elevate</span>
+        <h1>Building <em>Intelligent</em><br>Solutions That Matter</h1>
+        <p>Kelvaris Technologies delivers custom IoT, embedded systems, drone systems, agriculture devices, deep learning, and web/mobile applications — from prototype to production.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:1.6rem;">
+          <button class="btn-skeu btn-skeu-primary" onclick="navigate('projects')">
+            <i class="fas fa-layer-group" style="margin-right:6px;"></i>View Our Work
+          </button>
+          <button class="btn-skeu btn-skeu-outline" onclick="navigate('contact')">
+            Hire Us
+          </button>
+        </div>
+
+        <!-- Quick-nav feature cards -->
+        <div class="home-feature-grid">
+          <div class="home-feature-card" onclick="navigate('services')">
+            <i class="fas fa-microchip"></i>
+            <div><h6>Services</h6><p>IoT, Drones, ML &amp; more</p></div>
+          </div>
+          <div class="home-feature-card" onclick="navigate('projects')">
+            <i class="fas fa-layer-group"></i>
+            <div><h6>Projects</h6><p>50+ delivered</p></div>
+          </div>
+          <div class="home-feature-card" onclick="navigate('about')">
+            <i class="fas fa-users-cog"></i>
+            <div><h6>About Us</h6><p>Meet the team</p></div>
+          </div>
+          <div class="home-feature-card" onclick="navigate('contact')">
+            <i class="fas fa-paper-plane"></i>
+            <div><h6>Contact</h6><p>Start a project</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="hero-logo-panel" data-tilt id="heroTiltPanel">
+          <img src="logo.png" alt="Kelvaris Technologies — Innovate Build Elevate">
+        </div>
+      </div>
     </div>
-    <div class="stat-item">
-      <span class="stat-number">30+</span>
-      <div class="stat-label">Happy Clients</div>
-    </div>
-    <div class="stat-item">
-      <span class="stat-number">5+</span>
-      <div class="stat-label">Tech Stacks</div>
-    </div>
-    <div class="stat-item">
-      <span class="stat-number">24/7</span>
-      <div class="stat-label">Support</div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-number">50+</span>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">30+</span>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">8+</span>
+        <div class="stat-label">Tech Domains</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">24/7</span>
+        <div class="stat-label">Support</div>
+      </div>
     </div>
   </div>
+
+  <div class="plate-divider"></div>
+
+  <!-- HOME CTA -->
+  <div class="home-cta-strip">
+    <span class="section-label" style="color:var(--amber-glow);">// Ready to Build Something Real?</span>
+    <h2>From Idea to Product</h2>
+    <p>Whether you're a student, a startup, or a business — we bring the engineering expertise to make it happen.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-skeu btn-skeu-primary" onclick="navigate('services')">
+        <i class="fas fa-cogs" style="margin-right:6px;"></i>Our Services
+      </button>
+      <button class="btn-skeu btn-skeu-outline" onclick="navigate('contact')">
+        Get In Touch
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="skeu-footer">
+    <div class="container">
+      <div class="row gap-3">
+        <div class="col-3 mb-4">
+          <h5>Kelvaris</h5>
+          <p>Building intelligent solutions for students, startups, and businesses. Innovate. Build. Elevate.</p>
+          <div class="footer-social mt-2">
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="col-4 mb-4">
+          <h6>Navigate</h6>
+          <ul>
+            <li><a href="#" onclick="navigate('home');return false;">Home</a></li>
+            <li><a href="#" onclick="navigate('projects');return false;">Projects</a></li>
+            <li><a href="#" onclick="navigate('services');return false;">Services</a></li>
+            <li><a href="#" onclick="navigate('about');return false;">About</a></li>
+            <li><a href="#" onclick="navigate('contact');return false;">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-3 mb-4">
+          <h6>Services</h6>
+          <ul>
+            <li><a href="#" onclick="navigate('services');return false;">Embedded Systems</a></li>
+            <li><a href="#" onclick="navigate('services');return false;">Drone Systems</a></li>
+            <li><a href="#" onclick="navigate('services');return false;">Agriculture Devices</a></li>
+            <li><a href="#" onclick="navigate('services');return false;">Deep Learning</a></li>
+            <li><a href="#" onclick="navigate('services');return false;">Web Applications</a></li>
+          </ul>
+        </div>
+        <div class="col-3 mb-4">
+          <h6>Contact Info</h6>
+          <p><i class="fas fa-envelope" style="margin-right:6px;color:var(--amber);"></i> kelvaristechnologies@gmail.com</p>
+          <p style="margin-top:6px;"><i class="fas fa-phone" style="margin-right:6px;color:var(--amber);"></i> +91 9398112830</p>
+          <p style="margin-top:6px;"><i class="fas fa-map-marker-alt" style="margin-right:6px;color:var(--amber);"></i> Guntur, AP</p>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <div class="row" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <p class="footer-copy">© 2025 Kelvaris Technologies. All rights reserved.</p>
+        <p class="footer-copy">Made with <i class="fas fa-heart" style="color:#e74c3c;"></i> in Guntur, AP</p>
+      </div>
+    </div>
+  </footer>
 </div>
 
-<div class="plate-divider"></div>
 
-<!-- SERVICES PREVIEW -->
-<section class="skeu-section" style="background:var(--cream);">
-  <div class="container">
-    <div class="text-center mb-5">
-      <span class="section-label">// What We Do</span>
-      <h2 class="section-title section-title-center">Services</h2>
-    </div>
+<!-- ═══════════════════════════════════════════
+     PAGE: SERVICES
+════════════════════════════════════════════════ -->
+<div id="page-services" class="page">
 
-    <div class="row gap-3" style="margin-bottom:2rem;">
-      <!-- Service cards -->
-      <div class="col-3 mb-3">
-        <div class="skeu-card" style="height:100%;">
-          <div class="card-icon-panel"><i class="fas fa-microchip"></i></div>
-          <div class="card-body">
-            <h5 class="card-title">Embedded Systems</h5>
-            <p class="card-text">Microcontroller-based systems, robotics, and custom electronics for real-world applications.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-3 mb-3">
-        <div class="skeu-card" style="height:100%;">
-          <div class="card-icon-panel"><i class="fas fa-broadcast-tower"></i></div>
-          <div class="card-body">
-            <h5 class="card-title">IoT Applications</h5>
-            <p class="card-text">Smart home automation, wireless control systems, and connected IoT-enabled devices.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-3 mb-3">
-        <div class="skeu-card" style="height:100%;">
-          <div class="card-icon-panel"><i class="fas fa-globe"></i></div>
-          <div class="card-body">
-            <h5 class="card-title">Web Development</h5>
-            <p class="card-text">Custom web apps, e-commerce sites, and business portals built from scratch.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-3 mb-3">
-        <div class="skeu-card" style="height:100%;">
-          <div class="card-icon-panel"><i class="fas fa-brain"></i></div>
-          <div class="card-body">
-            <h5 class="card-title">Machine Learning</h5>
-            <p class="card-text">AI/ML models, data analysis, and predictive systems tailored to your business needs.</p>
-          </div>
-        </div>
-      </div>
+  <!-- PAGE HEADER -->
+  <section class="page-header-section">
+    <div class="pcb-grid"></div>
+    <div class="container text-center" style="position:relative;z-index:2;">
+      <span class="section-label" style="color:var(--amber-glow);">// What We Offer</span>
+      <h1 class="section-title section-title-center" style="color:var(--metal-light);text-shadow:2px 2px 0 rgba(0,0,0,0.4);">Services</h1>
+      <p style="color:var(--metal-mid);font-family:'Lora',serif;max-width:520px;margin:1.2rem auto 0;">End-to-end technical solutions — from silicon to cloud, hardware to application.</p>
     </div>
+  </section>
 
-    <div class="text-center">
-      <a href="service.html" class="btn-skeu btn-skeu-primary">View All Services</a>
+  <div class="plate-divider"></div>
+
+  <!-- SERVICES GRID -->
+  <section class="skeu-section" style="background:var(--cream);">
+    <div class="container">
+      <div class="row gap-3">
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-blue"><i class="fas fa-microchip"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">Embedded Systems</h5>
+              <p class="card-text">Microcontroller-based systems, robotics, and custom electronic solutions for real-world applications.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-teal"><i class="fas fa-broadcast-tower"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">IoT Applications</h5>
+              <p class="card-text">Smart home automation, wireless control systems, and connected IoT-enabled devices.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-amber"><i class="fas fa-helicopter"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">Drone Systems</h5>
+              <p class="card-text">Custom UAV design, autonomous flight systems, surveillance drones, and delivery drone prototypes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-green"><i class="fas fa-seedling"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">Agriculture Devices</h5>
+              <p class="card-text">Smart irrigation controllers, soil monitoring systems, crop health sensors, and precision farming devices.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-violet"><i class="fas fa-globe"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">Web Applications</h5>
+              <p class="card-text">Full-stack web apps, dashboards, e-commerce platforms, and enterprise portals built to scale.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-blue"><i class="fas fa-mobile-alt"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">Mobile Applications</h5>
+              <p class="card-text">Cross-platform Android and iOS apps using Flutter — from UI to hardware integration and backend APIs.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-violet"><i class="fas fa-brain"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">Machine Learning</h5>
+              <p class="card-text">AI/ML models, predictive systems, data analysis, and intelligent automation tailored to your domain.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-red"><i class="fas fa-network-wired"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">Deep Learning Projects</h5>
+              <p class="card-text">CNN, RNN, Transformer, and LSTM models for image recognition, NLP, speech, and video analysis.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-teal"><i class="fas fa-drafting-compass"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">PCB Designing</h5>
+              <p class="card-text">Custom PCB layout, schematic design, and simulation for electronics and hardware projects.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-amber"><i class="fas fa-laptop-code"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">Academic Projects</h5>
+              <p class="card-text">Final year projects, mini projects, and technical assignments across all engineering disciplines.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-green"><i class="fas fa-cogs"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">Automation Scripts</h5>
+              <p class="card-text">Task automation, web scraping, and process optimisation to save your team time and effort.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3 mb-4">
+          <div class="skeu-card" style="height:100%;">
+            <div class="card-icon-panel color-blue"><i class="fas fa-chalkboard-teacher"></i></div>
+            <div class="card-body">
+              <h5 class="card-title">Mentorship</h5>
+              <p class="card-text">1-on-1 guidance, code reviews, and career advice for aspiring developers and hardware engineers.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:var(--navy-grad);padding:56px 0;text-align:center;">
+    <div class="container">
+      <span class="section-label" style="color:var(--amber-glow);">// Ready to Build?</span>
+      <h2 style="font-family:'Oswald',sans-serif;font-size:1.9rem;color:var(--metal-light);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.8rem;">Let's Work Together</h2>
+      <p style="color:var(--metal-mid);font-family:'Lora',serif;max-width:460px;margin:0 auto 1.6rem;font-size:0.9rem;">Have a project in mind? Share the details and we'll get started within 24 hours.</p>
+      <button class="btn-skeu btn-skeu-primary" onclick="navigate('contact')">
+        <i class="fas fa-paper-plane" style="margin-right:6px;"></i>Contact Us
+      </button>
+    </div>
+  </section>
+
+  <footer class="skeu-footer">
+    <div class="container">
+      <div class="row gap-3">
+        <div class="col-3 mb-4">
+          <h5>Kelvaris</h5>
+          <p>Building intelligent solutions for students, startups, and businesses.</p>
+          <div class="footer-social mt-2">
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="col-4 mb-4">
+          <h6>Navigate</h6>
+          <ul>
+            <li><a href="#" onclick="navigate('home');return false;">Home</a></li>
+            <li><a href="#" onclick="navigate('projects');return false;">Projects</a></li>
+            <li><a href="#" onclick="navigate('services');return false;">Services</a></li>
+            <li><a href="#" onclick="navigate('about');return false;">About</a></li>
+            <li><a href="#" onclick="navigate('contact');return false;">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-3 mb-4">
+          <h6>Contact</h6>
+          <p><i class="fas fa-envelope" style="margin-right:6px;color:var(--amber);"></i> kelvaristechnologies@gmail.com</p>
+          <p style="margin-top:6px;"><i class="fas fa-phone" style="margin-right:6px;color:var(--amber);"></i> +91 9398112830</p>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <p class="footer-copy">© 2025 Kelvaris Technologies. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
+
+
+<div id="page-projects" class="page">
+
+  <!-- PAGE HEADER -->
+  <section class="page-header-section">
+    <div class="pcb-grid"></div>
+    <div class="container text-center" style="position:relative;z-index:2;">
+      <span class="section-label" style="color:var(--amber-glow);">// What We've Built</span>
+      <h1 class="section-title section-title-center" style="color:var(--metal-light);text-shadow:2px 2px 0 rgba(0,0,0,0.4);">Projects</h1>
+      <p style="color:var(--metal-mid);font-family:'Lora',serif;max-width:540px;margin:1.2rem auto 0;">
+        Browse by domain — from drones and agriculture to deep learning and web applications.
+      </p>
+    </div>
+  </section>
+
+  <div class="plate-divider"></div>
+
+  <!-- ── FILTER TAB BAR ── -->
+  <div class="proj-filter-bar" role="tablist" aria-label="Project domain filter">
+    <button class="proj-filter-btn active" onclick="filterProjects('all', this)" role="tab" aria-selected="true">
+      <i class="fas fa-th-large"></i> All
+    </button>
+    <button class="proj-filter-btn" onclick="filterProjects('embedded', this)" role="tab" aria-selected="false">
+      <i class="fas fa-microchip"></i> Embedded
+    </button>
+    <button class="proj-filter-btn" onclick="filterProjects('iot', this)" role="tab" aria-selected="false">
+      <i class="fas fa-broadcast-tower"></i> IoT
+    </button>
+    <button class="proj-filter-btn" onclick="filterProjects('drone', this)" role="tab" aria-selected="false">
+      <i class="fas fa-helicopter"></i> Drones
+    </button>
+    <button class="proj-filter-btn" onclick="filterProjects('agriculture', this)" role="tab" aria-selected="false">
+      <i class="fas fa-seedling"></i> Agriculture
+    </button>
+    <button class="proj-filter-btn" onclick="filterProjects('ml', this)" role="tab" aria-selected="false">
+      <i class="fas fa-brain"></i> ML / AI
+    </button>
+    <button class="proj-filter-btn" onclick="filterProjects('deeplearning', this)" role="tab" aria-selected="false">
+      <i class="fas fa-network-wired"></i> Deep Learning
+    </button>
+    <button class="proj-filter-btn" onclick="filterProjects('web', this)" role="tab" aria-selected="false">
+      <i class="fas fa-globe"></i> Web Apps
+    </button>
+    <button class="proj-filter-btn" onclick="filterProjects('mobile', this)" role="tab" aria-selected="false">
+      <i class="fas fa-mobile-alt"></i> Mobile
+    </button>
+    <button class="proj-filter-btn" onclick="filterProjects('pcb', this)" role="tab" aria-selected="false">
+      <i class="fas fa-drafting-compass"></i> PCB
+    </button>
   </div>
-</section>
 
-<div class="plate-divider"></div>
+  <!-- ══════════════════════════════════════
+       DOMAIN: EMBEDDED SYSTEMS
+  ══════════════════════════════════════ -->
+  <section class="proj-domain-section" data-domain="embedded">
+    <div class="container">
+      <div class="proj-domain-header">
+        <span class="proj-domain-icon color-blue"><i class="fas fa-microchip"></i></span>
+        <div>
+          <h2 class="proj-domain-title">Embedded Systems</h2>
+          <p class="proj-domain-sub">Microcontroller & hardware engineering projects</p>
+        </div>
+      </div>
+      <div class="proj-grid">
 
-<!-- CONTACT INFO -->
-<section class="skeu-section" style="background: var(--navy-grad);">
-  <div class="container">
-    <div class="text-center mb-5">
-      <span class="section-label" style="color:var(--amber-glow);">// Get In Touch</span>
-      <h2 class="section-title section-title-center" style="color:var(--metal-light); text-shadow:2px 2px 0 rgba(0,0,0,0.4);">Contact Us</h2>
+        <div class="proj-card" onclick="openModal('mFireRobot')">
+          <div class="proj-card-img color-blue"><i class="fas fa-fire-extinguisher"></i></div>
+          <div class="proj-card-body">
+            <h5>Fire Fighting Robot</h5>
+            <p>Autonomous robot detecting and extinguishing fire using IR sensors and servo-controlled water pump with obstacle avoidance.</p>
+            <div class="proj-tags"><span>Arduino</span><span>IR Sensors</span><span>Ultrasonic</span><span>Servo</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mLineFollower')">
+          <div class="proj-card-img color-blue"><i class="fas fa-robot"></i></div>
+          <div class="proj-card-body">
+            <h5>Line Follower Robot</h5>
+            <p>PID-controlled line follower with speed regulation and obstacle detection, built for inter-college robotics competition.</p>
+            <div class="proj-tags"><span>Arduino</span><span>PID</span><span>L298N</span><span>IR Array</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mAutoGate')">
+          <div class="proj-card-img color-blue"><i class="fas fa-door-open"></i></div>
+          <div class="proj-card-body">
+            <h5>Automatic Toll Gate</h5>
+            <p>RFID-based automatic toll collection system with vehicle counting, LCD display, and real-time database logging.</p>
+            <div class="proj-tags"><span>Arduino</span><span>RFID</span><span>Servo</span><span>LCD</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mSorter')">
+          <div class="proj-card-img color-blue"><i class="fas fa-boxes"></i></div>
+          <div class="proj-card-body">
+            <h5>Object Sorting Machine</h5>
+            <p>Colour-sensor-based conveyor belt sorting system that categorises objects into bins using servo-driven deflectors.</p>
+            <div class="proj-tags"><span>Arduino</span><span>TCS34725</span><span>Servo</span><span>Conveyor</span></div>
+          </div>
+        </div>
+
+      </div>
     </div>
+  </section>
 
-    <div class="row gap-3" style="justify-content:center;">
-      <div class="col-3 mb-3">
-        <div class="contact-info-block">
-          <i class="fas fa-envelope"></i>
-          <h5>Email</h5>
-          <p>gangadharbugathi@gmail.com</p>
+  <!-- ══════════════════════════════════════
+       DOMAIN: IoT
+  ══════════════════════════════════════ -->
+  <section class="proj-domain-section" data-domain="iot">
+    <div class="container">
+      <div class="proj-domain-header">
+        <span class="proj-domain-icon color-teal"><i class="fas fa-broadcast-tower"></i></span>
+        <div>
+          <h2 class="proj-domain-title">IoT Applications</h2>
+          <p class="proj-domain-sub">Connected devices, sensors & smart systems</p>
         </div>
       </div>
-      <div class="col-3 mb-3">
-        <div class="contact-info-block">
-          <i class="fas fa-phone"></i>
-          <h5>Phone</h5>
-          <p>+91 9398112830</p>
+      <div class="proj-grid">
+
+        <div class="proj-card" onclick="openModal('mSmartHome')">
+          <div class="proj-card-img color-teal"><i class="fas fa-home"></i></div>
+          <div class="proj-card-body">
+            <h5>IoT Smart Home</h5>
+            <p>Home automation controlling lights, fans, and appliances via mobile app with real-time Firebase monitoring.</p>
+            <div class="proj-tags"><span>NodeMCU</span><span>Firebase</span><span>Flutter</span><span>ESP8266</span></div>
+          </div>
         </div>
-      </div>
-      <div class="col-3 mb-3">
-        <div class="contact-info-block">
-          <i class="fas fa-map-marker-alt"></i>
-          <h5>Location</h5>
-          <p>Guntur, Andhra Pradesh</p>
+
+        <div class="proj-card" onclick="openModal('mWeather')">
+          <div class="proj-card-img color-teal"><i class="fas fa-cloud-sun"></i></div>
+          <div class="proj-card-body">
+            <h5>Weather Monitoring Station</h5>
+            <p>Real-time environmental station tracking temperature, humidity, UV index, and air quality with Blynk dashboard.</p>
+            <div class="proj-tags"><span>ESP8266</span><span>DHT22</span><span>BMP280</span><span>Blynk</span></div>
+          </div>
         </div>
+
+        <div class="proj-card" onclick="openModal('mFlowmatic')">
+          <div class="proj-card-img color-teal"><i class="fas fa-tint"></i></div>
+          <div class="proj-card-body">
+            <h5>Kelvaris FlowMatic</h5>
+            <p>Smart irrigation app for farmers connecting ESP32 via Firebase Realtime Database with Riverpod state management and fl_chart analytics.</p>
+            <div class="proj-tags"><span>ESP32</span><span>Flutter</span><span>Firebase</span><span>Riverpod</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mGasDetect')">
+          <div class="proj-card-img color-teal"><i class="fas fa-wind"></i></div>
+          <div class="proj-card-body">
+            <h5>Gas Leakage Detector</h5>
+            <p>Industrial-grade LPG/CO2 gas detection system with SMS and buzzer alerts and cloud logging for safety compliance.</p>
+            <div class="proj-tags"><span>ESP32</span><span>MQ-2</span><span>GSM</span><span>ThingSpeak</span></div>
+          </div>
+        </div>
+
       </div>
     </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       DOMAIN: DRONES
+  ══════════════════════════════════════ -->
+  <section class="proj-domain-section" data-domain="drone">
+    <div class="container">
+      <div class="proj-domain-header">
+        <span class="proj-domain-icon color-amber"><i class="fas fa-helicopter"></i></span>
+        <div>
+          <h2 class="proj-domain-title">Drone Systems</h2>
+          <p class="proj-domain-sub">UAV design, autonomous flight & aerial applications</p>
+        </div>
+      </div>
+      <div class="proj-grid">
+
+        <div class="proj-card" onclick="openModal('mAgriDrone')">
+          <div class="proj-card-img color-amber"><i class="fas fa-spray-can"></i></div>
+          <div class="proj-card-body">
+            <h5>Agricultural Sprayer Drone</h5>
+            <p>Precision UAV for automated pesticide and fertiliser application using GPS waypoint missions and NDVI sensing.</p>
+            <div class="proj-tags"><span>Pixhawk</span><span>ArduPilot</span><span>GPS</span><span>NDVI</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mSurvDrone')">
+          <div class="proj-card-img color-amber"><i class="fas fa-eye"></i></div>
+          <div class="proj-card-body">
+            <h5>Surveillance Drone</h5>
+            <p>Live-feed surveillance UAV with OpenCV object tracking, automated return-to-home, and LoRa long-range telemetry.</p>
+            <div class="proj-tags"><span>Pixhawk</span><span>OpenCV</span><span>LoRa</span><span>Raspberry Pi</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mDelivDrone')">
+          <div class="proj-card-img color-amber"><i class="fas fa-box"></i></div>
+          <div class="proj-card-body">
+            <h5>Delivery Drone Prototype</h5>
+            <p>Autonomous payload delivery drone with electro-mechanical release mechanism and GPS-locked hover at drop zone.</p>
+            <div class="proj-tags"><span>Pixhawk</span><span>Mission Planner</span><span>Servo Release</span><span>GPS</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mRaceDrone')">
+          <div class="proj-card-img color-amber"><i class="fas fa-wind"></i></div>
+          <div class="proj-card-body">
+            <h5>FPV Racing Drone</h5>
+            <p>5" FPV quadcopter tuned with Betaflight PID, 30×30 stack, 4-in-1 ESC, and HD camera for first-person racing.</p>
+            <div class="proj-tags"><span>Betaflight</span><span>F7 FC</span><span>4-in-1 ESC</span><span>FPV Cam</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       DOMAIN: AGRICULTURE
+  ══════════════════════════════════════ -->
+  <section class="proj-domain-section" data-domain="agriculture">
+    <div class="container">
+      <div class="proj-domain-header">
+        <span class="proj-domain-icon color-green"><i class="fas fa-seedling"></i></span>
+        <div>
+          <h2 class="proj-domain-title">Agriculture Devices</h2>
+          <p class="proj-domain-sub">Precision farming, soil monitoring & smart irrigation</p>
+        </div>
+      </div>
+      <div class="proj-grid">
+
+        <div class="proj-card" onclick="openModal('mSoilMonitor')">
+          <div class="proj-card-img color-green"><i class="fas fa-mountain"></i></div>
+          <div class="proj-card-body">
+            <h5>Soil Health Monitor</h5>
+            <p>Multi-parameter soil sensor node measuring NPK, pH, moisture, and temperature with LoRaWAN uplink to cloud dashboard.</p>
+            <div class="proj-tags"><span>ESP32</span><span>NPK Sensor</span><span>LoRa</span><span>ThingSpeak</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mCropHealth')">
+          <div class="proj-card-img color-green"><i class="fas fa-leaf"></i></div>
+          <div class="proj-card-body">
+            <h5>Crop Disease Detector</h5>
+            <p>CNN-based mobile app that identifies leaf diseases from photos in real time with 93% accuracy on 38 crop classes.</p>
+            <div class="proj-tags"><span>TensorFlow</span><span>Flutter</span><span>CNN</span><span>PlantVillage</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mIrrigation')">
+          <div class="proj-card-img color-green"><i class="fas fa-water"></i></div>
+          <div class="proj-card-body">
+            <h5>Smart Irrigation System</h5>
+            <p>Soil-moisture-triggered automatic irrigation with ESP32, valve control, and Flutter farmer app on Firebase backend.</p>
+            <div class="proj-tags"><span>ESP32</span><span>Firebase</span><span>Flutter</span><span>Solenoid Valve</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mGreenhouseBot')">
+          <div class="proj-card-img color-green"><i class="fas fa-industry"></i></div>
+          <div class="proj-card-body">
+            <h5>Greenhouse Automation</h5>
+            <p>Automated greenhouse controller managing ventilation, misting, grow-lights, and CO₂ levels via sensors and actuators.</p>
+            <div class="proj-tags"><span>Arduino</span><span>DHT22</span><span>CO₂ Sensor</span><span>Relay</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       DOMAIN: MACHINE LEARNING
+  ══════════════════════════════════════ -->
+  <section class="proj-domain-section" data-domain="ml">
+    <div class="container">
+      <div class="proj-domain-header">
+        <span class="proj-domain-icon color-violet"><i class="fas fa-brain"></i></span>
+        <div>
+          <h2 class="proj-domain-title">Machine Learning</h2>
+          <p class="proj-domain-sub">Predictive models, data analysis & intelligent automation</p>
+        </div>
+      </div>
+      <div class="proj-grid">
+
+        <div class="proj-card" onclick="openModal('mStock')">
+          <div class="proj-card-img color-violet"><i class="fas fa-chart-line"></i></div>
+          <div class="proj-card-body">
+            <h5>Stock Price Prediction</h5>
+            <p>LSTM model predicting stock prices with 85% directional accuracy, served via Streamlit with live NSE data feeds.</p>
+            <div class="proj-tags"><span>Python</span><span>TensorFlow</span><span>Streamlit</span><span>LSTM</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mDisease')">
+          <div class="proj-card-img color-violet"><i class="fas fa-heartbeat"></i></div>
+          <div class="proj-card-body">
+            <h5>Disease Prediction System</h5>
+            <p>Multi-class ML classifier for early disease diagnosis from symptom data, with Flask API and React frontend.</p>
+            <div class="proj-tags"><span>Scikit-learn</span><span>Flask</span><span>Random Forest</span><span>React</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mSpam')">
+          <div class="proj-card-img color-violet"><i class="fas fa-envelope-open-text"></i></div>
+          <div class="proj-card-body">
+            <h5>Spam Detection System</h5>
+            <p>NLP pipeline using TF-IDF and ensemble classifiers to detect email and SMS spam with 97% precision.</p>
+            <div class="proj-tags"><span>Python</span><span>NLP</span><span>TF-IDF</span><span>SVM</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mFraud')">
+          <div class="proj-card-img color-violet"><i class="fas fa-shield-alt"></i></div>
+          <div class="proj-card-body">
+            <h5>Credit Card Fraud Detection</h5>
+            <p>Anomaly detection model using SMOTE-balanced dataset and gradient boosting, achieving 99.2% AUC-ROC score.</p>
+            <div class="proj-tags"><span>XGBoost</span><span>SMOTE</span><span>Pandas</span><span>Plotly</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       DOMAIN: DEEP LEARNING
+  ══════════════════════════════════════ -->
+  <section class="proj-domain-section" data-domain="deeplearning">
+    <div class="container">
+      <div class="proj-domain-header">
+        <span class="proj-domain-icon color-red"><i class="fas fa-network-wired"></i></span>
+        <div>
+          <h2 class="proj-domain-title">Deep Learning Projects</h2>
+          <p class="proj-domain-sub">CNN, LSTM, Transformer & multimodal architectures</p>
+        </div>
+      </div>
+      <div class="proj-grid">
+
+        <div class="proj-card" onclick="openModal('mEmotion')">
+          <div class="proj-card-img color-red"><i class="fas fa-face-smile"></i></div>
+          <div class="proj-card-body">
+            <h5>Multimodal Emotion Recognition</h5>
+            <p>CNN+LSTM+Attention model fusing video and audio streams on RAVDESS dataset — improved vs baseline CNN by 18%.</p>
+            <div class="proj-tags"><span>PyTorch</span><span>MediaPipe</span><span>RAVDESS</span><span>Flask</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mFaceRecog')">
+          <div class="proj-card-img color-red"><i class="fas fa-user-circle"></i></div>
+          <div class="proj-card-body">
+            <h5>Face Recognition Attendance</h5>
+            <p>Real-time face recognition attendance system using FaceNet embeddings with anti-spoofing and MySQL logging.</p>
+            <div class="proj-tags"><span>FaceNet</span><span>OpenCV</span><span>Python</span><span>MySQL</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mObjectDet')">
+          <div class="proj-card-img color-red"><i class="fas fa-crosshairs"></i></div>
+          <div class="proj-card-body">
+            <h5>Real-Time Object Detection</h5>
+            <p>YOLOv8-based object detection system deployed on Raspberry Pi with TensorRT optimisation for edge inference.</p>
+            <div class="proj-tags"><span>YOLOv8</span><span>TensorRT</span><span>Raspberry Pi</span><span>OpenCV</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mTextGen')">
+          <div class="proj-card-img color-red"><i class="fas fa-keyboard"></i></div>
+          <div class="proj-card-body">
+            <h5>Text Summarisation (NLP)</h5>
+            <p>Abstractive text summariser using fine-tuned BART Transformer on custom domain corpus with ROUGE-L evaluation.</p>
+            <div class="proj-tags"><span>HuggingFace</span><span>BART</span><span>PyTorch</span><span>FastAPI</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       DOMAIN: WEB APPLICATIONS
+  ══════════════════════════════════════ -->
+  <section class="proj-domain-section" data-domain="web">
+    <div class="container">
+      <div class="proj-domain-header">
+        <span class="proj-domain-icon color-violet"><i class="fas fa-globe"></i></span>
+        <div>
+          <h2 class="proj-domain-title">Web Applications</h2>
+          <p class="proj-domain-sub">Full-stack apps, dashboards & enterprise platforms</p>
+        </div>
+      </div>
+      <div class="proj-grid">
+
+        <div class="proj-card" onclick="openModal('mEcommerce')">
+          <div class="proj-card-img color-violet"><i class="fas fa-shopping-cart"></i></div>
+          <div class="proj-card-body">
+            <h5>E-Commerce Platform</h5>
+            <p>Full-stack e-commerce site with Stripe payments, admin panel, inventory management, and order tracking dashboard.</p>
+            <div class="proj-tags"><span>Django</span><span>PostgreSQL</span><span>Stripe</span><span>React</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mStudentMgmt')">
+          <div class="proj-card-img color-violet"><i class="fas fa-graduation-cap"></i></div>
+          <div class="proj-card-body">
+            <h5>Student Management System</h5>
+            <p>Academic management portal for colleges — attendance, grades, timetable, and analytics with role-based access.</p>
+            <div class="proj-tags"><span>Django</span><span>MySQL</span><span>Chart.js</span><span>Bootstrap</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mIotDash')">
+          <div class="proj-card-img color-violet"><i class="fas fa-tachometer-alt"></i></div>
+          <div class="proj-card-body">
+            <h5>IoT Analytics Dashboard</h5>
+            <p>Real-time web dashboard for visualising sensor streams, device status, and alerts from multiple IoT deployments.</p>
+            <div class="proj-tags"><span>React</span><span>Node.js</span><span>MQTT</span><span>InfluxDB</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mPortfolio')">
+          <div class="proj-card-img color-violet"><i class="fas fa-laptop-code"></i></div>
+          <div class="proj-card-body">
+            <h5>Agency Portfolio Site</h5>
+            <p>Premium 3D agency website with React Three Fiber, Framer Motion, GSAP animations and Lenis smooth scroll.</p>
+            <div class="proj-tags"><span>React</span><span>Three.js</span><span>GSAP</span><span>Tailwind</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       DOMAIN: MOBILE APPLICATIONS
+  ══════════════════════════════════════ -->
+  <section class="proj-domain-section" data-domain="mobile">
+    <div class="container">
+      <div class="proj-domain-header">
+        <span class="proj-domain-icon color-blue"><i class="fas fa-mobile-alt"></i></span>
+        <div>
+          <h2 class="proj-domain-title">Mobile Applications</h2>
+          <p class="proj-domain-sub">Flutter-based Android & iOS apps</p>
+        </div>
+      </div>
+      <div class="proj-grid">
+
+        <div class="proj-card" onclick="openModal('mFlowmaticApp')">
+          <div class="proj-card-img color-blue"><i class="fas fa-tint"></i></div>
+          <div class="proj-card-body">
+            <h5>FlowMatic Irrigation App</h5>
+            <p>Flutter farmer app with GoRouter navigation, Riverpod state management, and real-time ESP32 farm control via Firebase.</p>
+            <div class="proj-tags"><span>Flutter</span><span>Firebase</span><span>Riverpod</span><span>GoRouter</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mHealthApp')">
+          <div class="proj-card-img color-blue"><i class="fas fa-heartbeat"></i></div>
+          <div class="proj-card-body">
+            <h5>Health Tracker App</h5>
+            <p>Personal health monitoring app tracking vitals, step count, hydration, and sleep with BLE sensor integration.</p>
+            <div class="proj-tags"><span>Flutter</span><span>BLE</span><span>Hive</span><span>fl_chart</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mDroneCtrl')">
+          <div class="proj-card-img color-blue"><i class="fas fa-gamepad"></i></div>
+          <div class="proj-card-body">
+            <h5>Drone Control App</h5>
+            <p>Mobile controller for custom drones with virtual joystick, telemetry display, and MAVLink UDP communication.</p>
+            <div class="proj-tags"><span>Flutter</span><span>MAVLink</span><span>UDP</span><span>Maps SDK</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mExpense')">
+          <div class="proj-card-img color-blue"><i class="fas fa-wallet"></i></div>
+          <div class="proj-card-body">
+            <h5>Expense Tracker</h5>
+            <p>Cross-platform expense management app with category budgets, charts, CSV export, and local SQLite storage.</p>
+            <div class="proj-tags"><span>Flutter</span><span>SQLite</span><span>fl_chart</span><span>Provider</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       DOMAIN: PCB DESIGN
+  ══════════════════════════════════════ -->
+  <section class="proj-domain-section" data-domain="pcb">
+    <div class="container">
+      <div class="proj-domain-header">
+        <span class="proj-domain-icon color-teal"><i class="fas fa-drafting-compass"></i></span>
+        <div>
+          <h2 class="proj-domain-title">PCB Designing</h2>
+          <p class="proj-domain-sub">Custom schematics, layout & hardware fabrication</p>
+        </div>
+      </div>
+      <div class="proj-grid">
+
+        <div class="proj-card" onclick="openModal('mSensorPcb')">
+          <div class="proj-card-img color-teal"><i class="fas fa-microchip"></i></div>
+          <div class="proj-card-body">
+            <h5>IoT Sensor Node PCB</h5>
+            <p>Compact 4-layer PCB for multi-parameter IoT sensing — integrates ESP32, power management, and sensor connectors.</p>
+            <div class="proj-tags"><span>KiCad</span><span>ESP32</span><span>4-Layer</span><span>SMD</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mMotorDriver')">
+          <div class="proj-card-img color-teal"><i class="fas fa-cogs"></i></div>
+          <div class="proj-card-body">
+            <h5>Motor Driver Board</h5>
+            <p>Custom dual H-bridge motor driver PCB rated for 10A continuous with regenerative braking and thermal protection.</p>
+            <div class="proj-tags"><span>Eagle</span><span>H-Bridge</span><span>10A</span><span>Thermal</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mPowerPcb')">
+          <div class="proj-card-img color-teal"><i class="fas fa-bolt"></i></div>
+          <div class="proj-card-body">
+            <h5>Power Distribution Board</h5>
+            <p>Drone power distribution PCB with current sensing on each motor arm, LC filter, and XT60 connectors for 6S LiPo.</p>
+            <div class="proj-tags"><span>KiCad</span><span>6S LiPo</span><span>Current Sensor</span><span>LC Filter</span></div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('mRfPcb')">
+          <div class="proj-card-img color-teal"><i class="fas fa-broadcast-tower"></i></div>
+          <div class="proj-card-body">
+            <h5>LoRa Gateway PCB</h5>
+            <p>Custom LoRaWAN gateway board with SX1276 module, impedance-matched antenna trace, and USB-C programming port.</p>
+            <div class="proj-tags"><span>KiCad</span><span>SX1276</span><span>LoRa</span><span>RF Design</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       MODALS — each domain's detailed view
+  ══════════════════════════════════════ -->
+
+  <!-- Embedded -->
+  <div class="skeu-modal-overlay" id="mFireRobot">
+    <div class="skeu-modal"><div class="modal-header"><h5>Fire Fighting Robot</h5><button class="modal-close" onclick="closeModal('mFireRobot')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Autonomous robot detecting fire using IR flame sensors and extinguishing it via a servo-controlled water pump. Includes ultrasonic obstacle avoidance for safe indoor navigation. Competed at inter-college tech fest, achieved 1st place in the robotics category.</p><div style="margin-top:1rem;"><span class="tech-badge">Arduino Mega</span><span class="tech-badge">IR Flame Sensors</span><span class="tech-badge">Ultrasonic HC-SR04</span><span class="tech-badge">Servo Motor</span><span class="tech-badge">L298N</span></div></div></div>
   </div>
-</section>
+  <div class="skeu-modal-overlay" id="mLineFollower">
+    <div class="skeu-modal"><div class="modal-header"><h5>Line Follower Robot</h5><button class="modal-close" onclick="closeModal('mLineFollower')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>High-speed PID-controlled line follower with 8-sensor IR array for accurate path detection. Tuned Kp/Ki/Kd values for 1.5 m/s track speed with smooth curve handling. Includes lap timer and obstacle stop on interruption.</p><div style="margin-top:1rem;"><span class="tech-badge">Arduino</span><span class="tech-badge">PID Controller</span><span class="tech-badge">IR Array (8)</span><span class="tech-badge">L298N</span><span class="tech-badge">OLED Display</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mAutoGate">
+    <div class="skeu-modal"><div class="modal-header"><h5>Automatic Toll Gate</h5><button class="modal-close" onclick="closeModal('mAutoGate')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>RFID card-based automated toll gate with servo barrier, vehicle counter, and 16×2 LCD balance display. Logs each transaction with timestamp to Firebase. Supports multiple registered card profiles with individual balance tracking.</p><div style="margin-top:1rem;"><span class="tech-badge">Arduino</span><span class="tech-badge">MFRC522 RFID</span><span class="tech-badge">Servo</span><span class="tech-badge">LCD I2C</span><span class="tech-badge">Firebase</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mSorter">
+    <div class="skeu-modal"><div class="modal-header"><h5>Object Sorting Machine</h5><button class="modal-close" onclick="closeModal('mSorter')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Automated conveyor belt sorting system using TCS34725 colour sensor to categorise objects (red/green/blue/other) into dedicated bins via servo-driven deflector arms. Throughput: 120 objects/min with 98% sort accuracy.</p><div style="margin-top:1rem;"><span class="tech-badge">Arduino</span><span class="tech-badge">TCS34725</span><span class="tech-badge">Servo ×3</span><span class="tech-badge">DC Motor</span><span class="tech-badge">L298N</span></div></div></div>
+  </div>
 
-<!-- FOOTER -->
-<footer class="skeu-footer">
-  <div class="container">
-    <div class="row gap-3">
-      <div class="col-3 mb-4">
-        <h5>Kelveris</h5>
-        <p>Building custom software solutions for students, startups, and businesses. Let's bring your ideas to life!</p>
-        <div class="footer-social mt-2">
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-          <a href="#"><i class="fab fa-github"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
+  <!-- IoT -->
+  <div class="skeu-modal-overlay" id="mSmartHome">
+    <div class="skeu-modal"><div class="modal-header"><h5>IoT Smart Home</h5><button class="modal-close" onclick="closeModal('mSmartHome')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Home automation system with NodeMCU controlling 8 appliance channels via 4-channel relay boards. Flutter mobile app provides real-time control and Firebase-backed device state sync across multiple phones simultaneously.</p><div style="margin-top:1rem;"><span class="tech-badge">NodeMCU ESP8266</span><span class="tech-badge">Firebase RTDB</span><span class="tech-badge">Flutter</span><span class="tech-badge">4-CH Relay</span><span class="tech-badge">PIR Sensor</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mWeather">
+    <div class="skeu-modal"><div class="modal-header"><h5>Weather Monitoring Station</h5><button class="modal-close" onclick="closeModal('mWeather')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Environmental monitoring station with 6-parameter sensing: temperature, humidity (DHT22), barometric pressure (BMP280), UV index (ML8511), air quality (MQ-135), and rain detection. Data pushed to Blynk and ThingSpeak dashboards every 30s.</p><div style="margin-top:1rem;"><span class="tech-badge">ESP8266</span><span class="tech-badge">DHT22</span><span class="tech-badge">BMP280</span><span class="tech-badge">ML8511</span><span class="tech-badge">Blynk</span><span class="tech-badge">ThingSpeak</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mFlowmatic">
+    <div class="skeu-modal"><div class="modal-header"><h5>Kelvaris FlowMatic</h5><button class="modal-close" onclick="closeModal('mFlowmatic')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Smart irrigation platform built for small-scale farmers. ESP32 reads soil moisture sensors and controls solenoid valves autonomously. The Flutter app (Riverpod + GoRouter + Firebase Auth) provides scheduling, real-time sensor charts via fl_chart, and push notification alerts for dry soil events.</p><div style="margin-top:1rem;"><span class="tech-badge">ESP32</span><span class="tech-badge">Firebase RTDB</span><span class="tech-badge">Flutter</span><span class="tech-badge">Riverpod</span><span class="tech-badge">GoRouter</span><span class="tech-badge">fl_chart</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mGasDetect">
+    <div class="skeu-modal"><div class="modal-header"><h5>Gas Leakage Detector</h5><button class="modal-close" onclick="closeModal('mGasDetect')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Industrial-grade LPG and CO₂ detection system with dual MQ-2/MQ-7 sensors. Triggers 95dB buzzer, sends SMS via SIM800L GSM module, and logs concentration readings to ThingSpeak for compliance reporting. Calibrated to 200ppm CO threshold.</p><div style="margin-top:1rem;"><span class="tech-badge">ESP32</span><span class="tech-badge">MQ-2 / MQ-7</span><span class="tech-badge">SIM800L GSM</span><span class="tech-badge">ThingSpeak</span><span class="tech-badge">Buzzer</span></div></div></div>
+  </div>
+
+  <!-- Drones -->
+  <div class="skeu-modal-overlay" id="mAgriDrone">
+    <div class="skeu-modal"><div class="modal-header"><h5>Agricultural Sprayer Drone</h5><button class="modal-close" onclick="closeModal('mAgriDrone')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Precision agri-UAV for automated pesticide and fertiliser application. Uses Pixhawk 2.4.8 with ArduCopter firmware for GPS waypoint missions. NDVI sensor feedback adjusts spray rate dynamically. 10L payload tank, 15-minute flight time, companion Android mission planning app.</p><div style="margin-top:1rem;"><span class="tech-badge">Pixhawk 2.4.8</span><span class="tech-badge">ArduPilot</span><span class="tech-badge">GPS M8N</span><span class="tech-badge">NDVI Sensor</span><span class="tech-badge">Android</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mSurvDrone">
+    <div class="skeu-modal"><div class="modal-header"><h5>Surveillance Drone</h5><button class="modal-close" onclick="closeModal('mSurvDrone')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Autonomous surveillance UAV streaming 1080p live video via 5.8GHz video transmitter. Raspberry Pi companion computer runs OpenCV object tracking and sends LoRa telemetry at 915MHz. Automated return-to-home on signal loss or low battery.</p><div style="margin-top:1rem;"><span class="tech-badge">Pixhawk</span><span class="tech-badge">Raspberry Pi 4</span><span class="tech-badge">OpenCV</span><span class="tech-badge">LoRa SX1276</span><span class="tech-badge">5.8GHz VTX</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mDelivDrone">
+    <div class="skeu-modal"><div class="modal-header"><h5>Delivery Drone Prototype</h5><button class="modal-close" onclick="closeModal('mDelivDrone')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Autonomous last-mile delivery prototype with 500g payload capacity. Electro-mechanical release mechanism drops payload at GPS-locked hover point. Tested over 200m range with 98% drop accuracy. Mission planning via Mission Planner GCS.</p><div style="margin-top:1rem;"><span class="tech-badge">Pixhawk</span><span class="tech-badge">Mission Planner</span><span class="tech-badge">Servo Release</span><span class="tech-badge">GPS M8N</span><span class="tech-badge">Telemetry 433MHz</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mRaceDrone">
+    <div class="skeu-modal"><div class="modal-header"><h5>FPV Racing Drone</h5><button class="modal-close" onclick="closeModal('mRaceDrone')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>5" freestyle/racing quad built on a carbon fibre frame with F7 flight controller, Betaflight 4.4, 4-in-1 35A ESC, and 2306 2450KV motors. Runcam Split 4 for HD recording. Achieved 140km/h top speed in open field testing.</p><div style="margin-top:1rem;"><span class="tech-badge">Betaflight 4.4</span><span class="tech-badge">F7 Flight Controller</span><span class="tech-badge">4-in-1 35A ESC</span><span class="tech-badge">Runcam Split 4</span></div></div></div>
+  </div>
+
+  <!-- Agriculture -->
+  <div class="skeu-modal-overlay" id="mSoilMonitor">
+    <div class="skeu-modal"><div class="modal-header"><h5>Soil Health Monitor</h5><button class="modal-close" onclick="closeModal('mSoilMonitor')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Field-deployable sensor node measuring NPK (RS485 probe), soil pH, volumetric moisture, and soil temperature. Data transmitted via LoRaWAN (TTN) to a ThingSpeak cloud dashboard. Solar-powered with 3-day battery backup. IP65-rated enclosure.</p><div style="margin-top:1rem;"><span class="tech-badge">ESP32</span><span class="tech-badge">RS485 NPK Probe</span><span class="tech-badge">LoRaWAN</span><span class="tech-badge">ThingSpeak</span><span class="tech-badge">Solar</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mCropHealth">
+    <div class="skeu-modal"><div class="modal-header"><h5>Crop Disease Detector</h5><button class="modal-close" onclick="closeModal('mCropHealth')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>On-device CNN classifier (MobileNetV3 fine-tuned on PlantVillage) detecting 38 crop-disease classes from leaf photos. Flutter app achieves 93% accuracy offline — no internet needed. Supports rice, tomato, potato, and maize. Farmers get crop-specific treatment recommendations.</p><div style="margin-top:1rem;"><span class="tech-badge">TensorFlow Lite</span><span class="tech-badge">MobileNetV3</span><span class="tech-badge">Flutter</span><span class="tech-badge">PlantVillage Dataset</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mIrrigation">
+    <div class="skeu-modal"><div class="modal-header"><h5>Smart Irrigation System</h5><button class="modal-close" onclick="closeModal('mIrrigation')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Soil-moisture-triggered irrigation with ESP32 reading capacitive sensors and driving 12V solenoid valves. Flutter farmer app over Firebase provides manual override, zone scheduling, and consumption analytics via fl_chart. Deployed at a 2-acre mango farm with 35% water saving reported.</p><div style="margin-top:1rem;"><span class="tech-badge">ESP32</span><span class="tech-badge">Capacitive Moisture Sensor</span><span class="tech-badge">Firebase RTDB</span><span class="tech-badge">Flutter</span><span class="tech-badge">Solenoid Valve 12V</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mGreenhouseBot">
+    <div class="skeu-modal"><div class="modal-header"><h5>Greenhouse Automation</h5><button class="modal-close" onclick="closeModal('mGreenhouseBot')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Full greenhouse climate controller managing exhaust fans (temperature), ultrasonic misting (humidity), LED grow-light scheduling (photoperiod), and CO₂ injection. 4-relay output board controlled by Arduino with OLED status panel and Blynk mobile monitoring.</p><div style="margin-top:1rem;"><span class="tech-badge">Arduino Mega</span><span class="tech-badge">DHT22</span><span class="tech-badge">CO₂ Sensor MH-Z19</span><span class="tech-badge">4-CH Relay</span><span class="tech-badge">Blynk</span></div></div></div>
+  </div>
+
+  <!-- ML -->
+  <div class="skeu-modal-overlay" id="mStock">
+    <div class="skeu-modal"><div class="modal-header"><h5>Stock Price Prediction</h5><button class="modal-close" onclick="closeModal('mStock')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Bidirectional LSTM model trained on 5 years of NSE daily OHLCV data, augmented with RSI, MACD, and Bollinger Bands features. Achieves 85% directional accuracy on test set. Deployed as Streamlit app with live NSE data feeds and portfolio back-testing module.</p><div style="margin-top:1rem;"><span class="tech-badge">Python</span><span class="tech-badge">TensorFlow / Keras</span><span class="tech-badge">Bi-LSTM</span><span class="tech-badge">Streamlit</span><span class="tech-badge">NSE API</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mDisease">
+    <div class="skeu-modal"><div class="modal-header"><h5>Disease Prediction System</h5><button class="modal-close" onclick="closeModal('mDisease')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Multi-class ML classifier for early-stage disease diagnosis from 17 symptom inputs. Ensemble of Random Forest, SVM, and XGBoost with soft voting achieves 94% accuracy on the Disease Symptom Dataset. Flask REST API consumed by a React.js patient portal.</p><div style="margin-top:1rem;"><span class="tech-badge">Scikit-learn</span><span class="tech-badge">XGBoost</span><span class="tech-badge">Flask API</span><span class="tech-badge">React.js</span><span class="tech-badge">Joblib</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mSpam">
+    <div class="skeu-modal"><div class="modal-header"><h5>Spam Detection System</h5><button class="modal-close" onclick="closeModal('mSpam')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>NLP-based spam classifier for email and SMS using TF-IDF vectorisation with bigrams and character n-grams. SVM with RBF kernel achieves 97.4% precision and 96.8% recall on the SMS Spam Collection dataset. Deployed as a browser extension prototype.</p><div style="margin-top:1rem;"><span class="tech-badge">Python</span><span class="tech-badge">TF-IDF</span><span class="tech-badge">SVM (RBF Kernel)</span><span class="tech-badge">NLTK</span><span class="tech-badge">Flask</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mFraud">
+    <div class="skeu-modal"><div class="modal-header"><h5>Credit Card Fraud Detection</h5><button class="modal-close" onclick="closeModal('mFraud')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Anomaly detection pipeline on the Kaggle Credit Card Fraud dataset (284K transactions, 0.17% fraud rate). SMOTE oversampling + Gradient Boosting achieves 99.2% AUC-ROC. Includes real-time inference API and Plotly confusion matrix / precision-recall dashboards.</p><div style="margin-top:1rem;"><span class="tech-badge">XGBoost</span><span class="tech-badge">SMOTE (imbalanced-learn)</span><span class="tech-badge">Pandas</span><span class="tech-badge">Plotly</span><span class="tech-badge">FastAPI</span></div></div></div>
+  </div>
+
+  <!-- Deep Learning -->
+  <div class="skeu-modal-overlay" id="mEmotion">
+    <div class="skeu-modal"><div class="modal-header"><h5>Multimodal Emotion Recognition</h5><button class="modal-close" onclick="closeModal('mEmotion')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>CNN+LSTM+Attention model fusing video (MediaPipe face landmarks) and audio (MFCCs + mel-spectrograms) on the RAVDESS dataset. Improved over baseline CNN by 18% on 8-class emotion recognition. Confidence-weighted fusion with softmax temperature scaling. Flask REST API demo.</p><div style="margin-top:1rem;"><span class="tech-badge">PyTorch</span><span class="tech-badge">MediaPipe</span><span class="tech-badge">RAVDESS Dataset</span><span class="tech-badge">MFCC</span><span class="tech-badge">Flask</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mFaceRecog">
+    <div class="skeu-modal"><div class="modal-header"><h5>Face Recognition Attendance</h5><button class="modal-close" onclick="closeModal('mFaceRecog')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Real-time attendance system using FaceNet 512-d embeddings with cosine similarity matching. Anti-spoofing via depth estimation (MiDaS) rejects printed photos. Attendance auto-logged to MySQL with PDF report export. Supports 500+ enrolled faces at <80ms inference.</p><div style="margin-top:1rem;"><span class="tech-badge">FaceNet</span><span class="tech-badge">OpenCV</span><span class="tech-badge">MiDaS (Depth)</span><span class="tech-badge">MySQL</span><span class="tech-badge">Python</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mObjectDet">
+    <div class="skeu-modal"><div class="modal-header"><h5>Real-Time Object Detection</h5><button class="modal-close" onclick="closeModal('mObjectDet')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>YOLOv8n model fine-tuned on a custom 12-class dataset and optimised with TensorRT INT8 quantisation for Raspberry Pi 4 edge deployment. Achieves 28 FPS at 640×480 on-device. Streams annotated video over RTSP to a web dashboard.</p><div style="margin-top:1rem;"><span class="tech-badge">YOLOv8</span><span class="tech-badge">TensorRT INT8</span><span class="tech-badge">Raspberry Pi 4</span><span class="tech-badge">OpenCV</span><span class="tech-badge">RTSP</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mTextGen">
+    <div class="skeu-modal"><div class="modal-header"><h5>Text Summarisation (NLP)</h5><button class="modal-close" onclick="closeModal('mTextGen')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Abstractive summariser using BART-large fine-tuned on CNN/DailyMail + a custom domain corpus. Achieves ROUGE-L of 0.41 on test set. FastAPI backend with React frontend — paste any article and get a bullet-point or paragraph summary in under 3 seconds.</p><div style="margin-top:1rem;"><span class="tech-badge">HuggingFace Transformers</span><span class="tech-badge">BART-large</span><span class="tech-badge">PyTorch</span><span class="tech-badge">FastAPI</span><span class="tech-badge">React</span></div></div></div>
+  </div>
+
+  <!-- Web -->
+  <div class="skeu-modal-overlay" id="mEcommerce">
+    <div class="skeu-modal"><div class="modal-header"><h5>E-Commerce Platform</h5><button class="modal-close" onclick="closeModal('mEcommerce')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Full-stack B2C e-commerce platform with product catalog, cart, Stripe Checkout integration, vendor admin panel, inventory alerts, and order tracking. Django REST Framework backend + React.js SPA frontend. Deployed on Heroku with PostgreSQL.</p><div style="margin-top:1rem;"><span class="tech-badge">Django REST Framework</span><span class="tech-badge">React.js</span><span class="tech-badge">PostgreSQL</span><span class="tech-badge">Stripe</span><span class="tech-badge">Heroku</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mStudentMgmt">
+    <div class="skeu-modal"><div class="modal-header"><h5>Student Management System</h5><button class="modal-close" onclick="closeModal('mStudentMgmt')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>College-grade academic portal with role-based access (admin / faculty / student). Manages attendance, marks, timetable, fee tracking, and result publishing. Chart.js analytics dashboard with semester-wise performance visualisation. Deployed for 3 institutions.</p><div style="margin-top:1rem;"><span class="tech-badge">Django</span><span class="tech-badge">MySQL</span><span class="tech-badge">Chart.js</span><span class="tech-badge">Bootstrap 5</span><span class="tech-badge">Celery</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mIotDash">
+    <div class="skeu-modal"><div class="modal-header"><h5>IoT Analytics Dashboard</h5><button class="modal-close" onclick="closeModal('mIotDash')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Real-time web dashboard for multi-device IoT deployments. MQTT broker (Mosquitto) feeds Node.js backend; time-series data stored in InfluxDB; React frontend with Recharts. Supports custom alert thresholds, device grouping, and CSV data export.</p><div style="margin-top:1rem;"><span class="tech-badge">React.js</span><span class="tech-badge">Node.js</span><span class="tech-badge">MQTT / Mosquitto</span><span class="tech-badge">InfluxDB</span><span class="tech-badge">Recharts</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mPortfolio">
+    <div class="skeu-modal"><div class="modal-header"><h5>Agency Portfolio Site</h5><button class="modal-close" onclick="closeModal('mPortfolio')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Premium 3D agency website for Kelvaris Technologies itself — React + Vite + React Three Fiber crystalline hero scene, Framer Motion scroll animations, GSAP micro-interactions, Lenis smooth scroll, and Tailwind CSS. Adaptive rendering (high/low/none) based on device GPU capability.</p><div style="margin-top:1rem;"><span class="tech-badge">React + Vite</span><span class="tech-badge">Three.js / R3F</span><span class="tech-badge">Framer Motion</span><span class="tech-badge">GSAP</span><span class="tech-badge">Tailwind CSS</span></div></div></div>
+  </div>
+
+  <!-- Mobile -->
+  <div class="skeu-modal-overlay" id="mFlowmaticApp">
+    <div class="skeu-modal"><div class="modal-header"><h5>FlowMatic Irrigation App</h5><button class="modal-close" onclick="closeModal('mFlowmaticApp')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Flutter farmer app built with Riverpod state management and GoRouter navigation. Firebase Auth, RTDB for real-time ESP32 sensor data, and fl_chart for analytics. Supports zone scheduling, push notifications for dry soil events, and manual valve override.</p><div style="margin-top:1rem;"><span class="tech-badge">Flutter</span><span class="tech-badge">Firebase Auth + RTDB</span><span class="tech-badge">Riverpod</span><span class="tech-badge">GoRouter</span><span class="tech-badge">fl_chart</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mHealthApp">
+    <div class="skeu-modal"><div class="modal-header"><h5>Health Tracker App</h5><button class="modal-close" onclick="closeModal('mHealthApp')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Personal health monitoring Flutter app with BLE integration for wearable sensors. Tracks step count (accelerometer), heart rate (MAX30102 via BLE), hydration reminders, and sleep duration. Hive local storage with fl_chart weekly trend visualisation.</p><div style="margin-top:1rem;"><span class="tech-badge">Flutter</span><span class="tech-badge">BLE / flutter_blue_plus</span><span class="tech-badge">Hive DB</span><span class="tech-badge">fl_chart</span><span class="tech-badge">MAX30102</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mDroneCtrl">
+    <div class="skeu-modal"><div class="modal-header"><h5>Drone Control App</h5><button class="modal-close" onclick="closeModal('mDroneCtrl')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Flutter mobile ground control station for custom drones. Virtual twin-joystick (roll/pitch/yaw/throttle), MAVLink UDP telemetry parser, real-time altitude/speed/battery HUD, and Google Maps waypoint mission planning. Works over Wi-Fi or LTE.</p><div style="margin-top:1rem;"><span class="tech-badge">Flutter</span><span class="tech-badge">MAVLink Protocol</span><span class="tech-badge">UDP Sockets</span><span class="tech-badge">Google Maps SDK</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mExpense">
+    <div class="skeu-modal"><div class="modal-header"><h5>Expense Tracker</h5><button class="modal-close" onclick="closeModal('mExpense')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Cross-platform personal finance app with category-based budgets, monthly spend pie/bar charts (fl_chart), recurring transaction scheduling, and CSV/PDF export. SQLite local storage, Provider state management. Works fully offline.</p><div style="margin-top:1rem;"><span class="tech-badge">Flutter</span><span class="tech-badge">SQLite / sqflite</span><span class="tech-badge">fl_chart</span><span class="tech-badge">Provider</span><span class="tech-badge">pdf package</span></div></div></div>
+  </div>
+
+  <!-- PCB -->
+  <div class="skeu-modal-overlay" id="mSensorPcb">
+    <div class="skeu-modal"><div class="modal-header"><h5>IoT Sensor Node PCB</h5><button class="modal-close" onclick="closeModal('mSensorPcb')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Compact 4-layer PCB integrating ESP32-WROOM, LM1117 3.3V regulator, TP4056 LiPo charger, JST sensor headers for I²C/SPI/ADC sensors, and USB-C programming port. Designed in KiCad with design-rule check passing for JLCPCB 4-layer fabrication.</p><div style="margin-top:1rem;"><span class="tech-badge">KiCad</span><span class="tech-badge">ESP32-WROOM</span><span class="tech-badge">TP4056</span><span class="tech-badge">4-Layer PCB</span><span class="tech-badge">SMD 0402</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mMotorDriver">
+    <div class="skeu-modal"><div class="modal-header"><h5>Motor Driver Board</h5><button class="modal-close" onclick="closeModal('mMotorDriver')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Dual full H-bridge motor driver rated 10A continuous (30A peak) with BTS7960 half-bridge pairs. Features hardware current sensing (ACS712), PWM input up to 20kHz, regenerative braking, and onboard heatsink pads. Designed in Eagle, fabricated 2-layer.</p><div style="margin-top:1rem;"><span class="tech-badge">Eagle CAD</span><span class="tech-badge">BTS7960 H-Bridge</span><span class="tech-badge">ACS712 Current Sense</span><span class="tech-badge">2-Layer</span><span class="tech-badge">10A / 30A Peak</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mPowerPcb">
+    <div class="skeu-modal"><div class="modal-header"><h5>Power Distribution Board</h5><button class="modal-close" onclick="closeModal('mPowerPcb')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>6S LiPo drone PDB with 4-arm current sensing (INA219 per arm), LC filter for clean 5V/12V BEC rails, XT60 main connector, 4× ESC solder pads (up to 40A each), and USB-C powered flight controller output. KiCad-designed, 2oz copper pour.</p><div style="margin-top:1rem;"><span class="tech-badge">KiCad</span><span class="tech-badge">INA219</span><span class="tech-badge">LC Filter</span><span class="tech-badge">XT60</span><span class="tech-badge">2oz Copper</span></div></div></div>
+  </div>
+  <div class="skeu-modal-overlay" id="mRfPcb">
+    <div class="skeu-modal"><div class="modal-header"><h5>LoRa Gateway PCB</h5><button class="modal-close" onclick="closeModal('mRfPcb')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p>Custom LoRaWAN single-channel gateway board with SX1276 RF module, 50Ω impedance-matched microstrip antenna trace, ESP32 host MCU, USB-C programming, and 5V/2A power input. Board passes DRC for JLCPCB 2-layer. Successfully connected to TTN network server.</p><div style="margin-top:1rem;"><span class="tech-badge">KiCad</span><span class="tech-badge">SX1276</span><span class="tech-badge">ESP32</span><span class="tech-badge">50Ω Microstrip</span><span class="tech-badge">TTN</span></div></div></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="skeu-footer">
+    <div class="container">
+      <div class="row gap-3">
+        <div class="col-3 mb-4">
+          <h5>Kelvaris</h5>
+          <p>Building intelligent solutions for students, startups, and businesses.</p>
+          <div class="footer-social mt-2">
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="col-4 mb-4">
+          <h6>Navigate</h6>
+          <ul>
+            <li><a href="#" onclick="navigate('home');return false;">Home</a></li>
+            <li><a href="#" onclick="navigate('projects');return false;">Projects</a></li>
+            <li><a href="#" onclick="navigate('services');return false;">Services</a></li>
+            <li><a href="#" onclick="navigate('about');return false;">About</a></li>
+            <li><a href="#" onclick="navigate('contact');return false;">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-3 mb-4">
+          <h6>Contact</h6>
+          <p><i class="fas fa-envelope" style="margin-right:6px;color:var(--amber);"></i> kelvaristechnologies@gmail.com</p>
+          <p style="margin-top:6px;"><i class="fas fa-phone" style="margin-right:6px;color:var(--amber);"></i> +91 9398112830</p>
         </div>
       </div>
-      <div class="col-4 mb-4">
-        <h6>Quick Links</h6>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="project.html">Projects</a></li>
-          <li><a href="service.html">Services</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </div>
-      <div class="col-3 mb-4">
-        <h6>Services</h6>
-        <ul>
-          <li><a href="service.html">Embedded Systems</a></li>
-          <li><a href="service.html">IoT Applications</a></li>
-          <li><a href="service.html">Web Development</a></li>
-          <li><a href="service.html">Machine Learning</a></li>
-          <li><a href="service.html">PCB Design</a></li>
-        </ul>
-      </div>
-      <div class="col-3 mb-4">
-        <h6>Contact Info</h6>
-        <p><i class="fas fa-envelope" style="margin-right:6px;color:var(--amber);"></i> gangadharbugathi@gmail.com</p>
-        <p style="margin-top:6px;"><i class="fas fa-phone" style="margin-right:6px;color:var(--amber);"></i> +91 9398112830</p>
-        <p style="margin-top:6px;"><i class="fas fa-map-marker-alt" style="margin-right:6px;color:var(--amber);"></i> Guntur, AP</p>
-      </div>
+      <hr class="footer-divider">
+      <p class="footer-copy">© 2025 Kelvaris Technologies. All rights reserved.</p>
     </div>
-    <hr class="footer-divider">
-    <div class="row" style="justify-content:space-between;align-items:center;">
-      <p class="footer-copy">© 2025 Kelveris Technologies. All rights reserved.</p>
-      <p class="footer-copy">Made with <i class="fas fa-heart" style="color:#e74c3c;"></i> for amazing clients</p>
-    </div>
-  </div>
-</footer>
+  </footer>
 
-<!-- WhatsApp -->
-<a href="https://wa.me/919398112830?text=Hi! I'm interested in your services" class="float-wa" target="_blank">
+</div>
+
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE: ABOUT
+════════════════════════════════════════════════ -->
+<div id="page-about" class="page">
+
+  <section class="page-header-section">
+    <div class="pcb-grid"></div>
+    <div class="container text-center" style="position:relative;z-index:2;">
+      <span class="section-label" style="color:var(--amber-glow);">// Who We Are</span>
+      <h1 class="section-title section-title-center" style="color:var(--metal-light);text-shadow:2px 2px 0 rgba(0,0,0,0.4);">About Us</h1>
+    </div>
+  </section>
+
+  <div class="plate-divider"></div>
+
+  <section class="skeu-section" style="background:var(--cream);">
+    <div class="container">
+      <div class="row gap-3" style="align-items:flex-start;">
+
+        <div class="col-2 mb-4">
+          <div class="about-panel">
+            <span class="section-label">// Our Mission</span>
+            <h2 class="section-title" style="margin-bottom:1.4rem;">Passionate<br>About Engineering</h2>
+            <p>We are a dedicated team specialising in <strong>Hardware, IoT, Drones, Agriculture Devices, and AI</strong> — delivering innovative solutions for academic projects and real-world applications.</p>
+            <p style="margin-top:1rem;">From smart irrigation to autonomous drones and deep learning systems, our focus is on <strong>practical implementations</strong> combined with software intelligence. With strong expertise in microcontrollers, PCB design, aerial systems, and system integration, we help students and businesses turn their ideas into working prototypes.</p>
+            <ul class="check-list mt-3">
+              <li><i class="fas fa-check-circle"></i> 50+ Projects Delivered</li>
+              <li><i class="fas fa-check-circle"></i> IoT, Drone &amp; Agriculture Expertise</li>
+              <li><i class="fas fa-check-circle"></i> Deep Learning &amp; ML Specialists</li>
+              <li><i class="fas fa-check-circle"></i> End-to-End Prototype Solutions</li>
+              <li><i class="fas fa-check-circle"></i> Collaborative Team of Specialists</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-2 mb-4">
+          <div style="background:var(--panel-grad);border-radius:14px;border:2px solid var(--navy-mid);padding:2rem;box-shadow:var(--shadow-deep);">
+            <span class="section-label" style="color:var(--amber-glow);">// The People</span>
+            <h3 style="font-family:'Oswald',sans-serif;font-size:1.3rem;color:var(--metal-light);letter-spacing:1px;text-transform:uppercase;margin-bottom:1.4rem;text-shadow:1px 1px 0 rgba(0,0,0,0.4);">Our Team</h3>
+            <div class="row gap-2">
+              <div class="col-2 mb-2"><div class="team-card"><i class="fas fa-user-cog"></i><h6>Gangadhar Bhagathi</h6></div></div>
+              <div class="col-2 mb-2"><div class="team-card"><i class="fas fa-user-cog"></i><h6>Teja Srinivas Ande</h6></div></div>
+              <div class="col-2 mb-2"><div class="team-card"><i class="fas fa-user-cog"></i><h6>Srilakshmi Abburi</h6></div></div>
+              <div class="col-2 mb-2"><div class="team-card"><i class="fas fa-user-cog"></i><h6>Srilatha Abburi</h6></div></div>
+              <div class="col-2 mb-2"><div class="team-card"><i class="fas fa-user-cog"></i><h6>Meghana Bollineni</h6></div></div>
+              <div class="col-2 mb-2"><div class="team-card"><i class="fas fa-user-cog"></i><h6>Geeshpath Kanatham</h6></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="skeu-footer">
+    <div class="container">
+      <div class="row gap-3">
+        <div class="col-3 mb-4">
+          <h5>Kelvaris</h5>
+          <p>Building intelligent solutions for students, startups, and businesses.</p>
+          <div class="footer-social mt-2">
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="col-4 mb-4">
+          <h6>Navigate</h6>
+          <ul>
+            <li><a href="#" onclick="navigate('home');return false;">Home</a></li>
+            <li><a href="#" onclick="navigate('projects');return false;">Projects</a></li>
+            <li><a href="#" onclick="navigate('services');return false;">Services</a></li>
+            <li><a href="#" onclick="navigate('about');return false;">About</a></li>
+            <li><a href="#" onclick="navigate('contact');return false;">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-3 mb-4">
+          <h6>Contact</h6>
+          <p><i class="fas fa-envelope" style="margin-right:6px;color:var(--amber);"></i> kelvaristechnologies@gmail.com</p>
+          <p style="margin-top:6px;"><i class="fas fa-phone" style="margin-right:6px;color:var(--amber);"></i> +91 9398112830</p>
+          <p style="margin-top:6px;"><i class="fas fa-map-marker-alt" style="margin-right:6px;color:var(--amber);"></i> Guntur, AP</p>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <p class="footer-copy">© 2025 Kelvaris Technologies. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE: CONTACT
+════════════════════════════════════════════════ -->
+<div id="page-contact" class="page">
+
+  <section class="page-header-section">
+    <div class="pcb-grid"></div>
+    <div class="container text-center" style="position:relative;z-index:2;">
+      <span class="section-label" style="color:var(--amber-glow);">// Reach Out</span>
+      <h1 class="section-title section-title-center" style="color:var(--metal-light);text-shadow:2px 2px 0 rgba(0,0,0,0.4);">Contact Us</h1>
+      <p style="color:var(--metal-mid);font-family:'Lora',serif;max-width:500px;margin:1.2rem auto 0;">Share your project details and we'll respond within 24 hours.</p>
+    </div>
+  </section>
+
+  <div class="plate-divider"></div>
+
+  <section class="skeu-section" style="background:var(--cream);">
+    <div class="container">
+      <div class="row gap-3" style="align-items:flex-start;justify-content:center;">
+
+        <!-- Info cards -->
+        <div style="width:30%;min-width:240px;" class="mb-4">
+          <div style="display:flex;flex-direction:column;gap:1rem;">
+            <div class="contact-info-block">
+              <i class="fas fa-envelope"></i>
+              <h5>Email</h5>
+              <p>kelvaristechnologies@gmail.com</p>
+            </div>
+            <div class="contact-info-block">
+              <i class="fas fa-phone"></i>
+              <h5>Phone</h5>
+              <p>+91 9398112830</p>
+            </div>
+            <div class="contact-info-block">
+              <i class="fas fa-map-marker-alt"></i>
+              <h5>Location</h5>
+              <p>Guntur, Andhra Pradesh</p>
+            </div>
+            <div class="contact-info-block">
+              <i class="fab fa-whatsapp"></i>
+              <h5>WhatsApp</h5>
+              <p>+91 9398112830</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div style="flex:1;min-width:280px;" class="mb-4">
+          <div class="skeu-form-panel">
+            <span class="section-label">// Project Inquiry</span>
+            <h2 class="section-title" style="margin-bottom:1.8rem;">Send a Message</h2>
+
+            <form action="https://formspree.io/f/xblawnlk" method="POST" onsubmit="handleFormSubmit(event)">
+              <div class="form-group">
+                <label class="form-label" for="name">Your Name</label>
+                <input type="text" id="name" name="name" class="form-control-skeu" placeholder="Enter your full name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control-skeu" placeholder="Enter your email" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" class="form-control-skeu" placeholder="e.g. Drone Project Inquiry" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="message">Message</label>
+                <textarea id="message" name="message" rows="5" class="form-control-skeu" placeholder="Describe your project..." required style="resize:vertical;"></textarea>
+              </div>
+              <button type="submit" class="btn-skeu btn-skeu-primary" style="width:100%;" id="submitBtn">
+                <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Send Message
+              </button>
+              <div id="formSuccess" style="display:none;margin-top:1rem;padding:12px;background:rgba(46,204,113,0.15);border:1px solid rgba(46,204,113,0.4);border-radius:8px;text-align:center;font-family:'Oswald',sans-serif;font-size:0.85rem;letter-spacing:1px;color:#2ecc71;">
+                ✓ MESSAGE SENT — WE'LL BE IN TOUCH SOON!
+              </div>
+              <div id="formError" style="display:none;margin-top:1rem;padding:12px;background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.4);border-radius:8px;text-align:center;font-family:'Oswald',sans-serif;font-size:0.85rem;letter-spacing:1px;color:#e74c3c;">
+                ✗ SOMETHING WENT WRONG — PLEASE TRY AGAIN OR EMAIL US DIRECTLY.
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="skeu-footer">
+    <div class="container">
+      <div class="row gap-3">
+        <div class="col-3 mb-4">
+          <h5>Kelvaris</h5>
+          <p>Building intelligent solutions for students, startups, and businesses.</p>
+          <div class="footer-social mt-2">
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="col-4 mb-4">
+          <h6>Navigate</h6>
+          <ul>
+            <li><a href="#" onclick="navigate('home');return false;">Home</a></li>
+            <li><a href="#" onclick="navigate('projects');return false;">Projects</a></li>
+            <li><a href="#" onclick="navigate('services');return false;">Services</a></li>
+            <li><a href="#" onclick="navigate('about');return false;">About</a></li>
+            <li><a href="#" onclick="navigate('contact');return false;">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-3 mb-4">
+          <h6>Contact Info</h6>
+          <p><i class="fas fa-envelope" style="margin-right:6px;color:var(--amber);"></i> kelvaristechnologies@gmail.com</p>
+          <p style="margin-top:6px;"><i class="fas fa-phone" style="margin-right:6px;color:var(--amber);"></i> +91 9398112830</p>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <p class="footer-copy">© 2025 Kelvaris Technologies. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
+
+
+<!-- WhatsApp Float (always visible) -->
+<a href="https://wa.me/919398112830?text=Hi! I'm interested in Kelvaris Technologies services." class="float-wa" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
   <i class="fab fa-whatsapp"></i>
 </a>
 
-<!-- Mouse-reactive 3D tilt for hero logo panel -->
+
+<!-- =============================================
+     PAGE HEADER SHARED STYLES (injected inline
+     since we can't add a second <style> cleanly
+     in the head without duplication — done here
+     for maintainability)
+============================================== -->
+<style>
+  .page-header-section {
+    background: var(--panel-grad);
+    padding: 110px 0 52px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pcb-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(46,64,112,0.16) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,64,112,0.16) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+</style>
+
+
+<!-- =============================================
+     SCRIPTS
+============================================== -->
 <script>
+  /* ──────────────────────────────────────────
+     SPA ROUTER
+  ────────────────────────────────────────── */
+  const PAGES = ['home', 'projects', 'services', 'about', 'contact'];
+  let currentPage = 'home';
+
+  function navigate(pageId) {
+    if (!PAGES.includes(pageId)) return;
+
+    // Hide all pages
+    PAGES.forEach(p => {
+      const el = document.getElementById('page-' + p);
+      if (el) el.classList.remove('page-active');
+    });
+
+    // Show target page
+    const target = document.getElementById('page-' + pageId);
+    if (target) target.classList.add('page-active');
+
+    // Update nav active state
+    document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+      a.classList.toggle('active', a.dataset.page === pageId);
+    });
+
+    // Close mobile menu
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('menuIcon').className = 'fas fa-bars';
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    currentPage = pageId;
+
+    // Update browser URL hash for back-button support
+    history.pushState({ page: pageId }, '', '#' + pageId);
+  }
+
+  // Handle browser back/forward
+  window.addEventListener('popstate', (e) => {
+    const page = e.state?.page || 'home';
+    navigate(page);
+  });
+
+  // Handle initial hash on load
+  window.addEventListener('DOMContentLoaded', () => {
+    const hash = location.hash.replace('#', '');
+    if (PAGES.includes(hash)) navigate(hash);
+  });
+
+  /* ──────────────────────────────────────────
+     MOBILE MENU TOGGLE
+  ────────────────────────────────────────── */
+  function toggleMobileMenu() {
+    const links = document.getElementById('navLinks');
+    const icon  = document.getElementById('menuIcon');
+    const isOpen = links.classList.toggle('open');
+    icon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
+  }
+
+  /* ──────────────────────────────────────────
+     MODAL HELPERS
+  ────────────────────────────────────────── */
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  // Click outside modal to close
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('skeu-modal-overlay')) {
+      e.target.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+  // Escape key closes modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.skeu-modal-overlay.open').forEach(m => {
+        m.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    }
+  });
+
+  /* ──────────────────────────────────────────
+   PROJECT DOMAIN FILTER
+────────────────────────────────────────── */
+function filterProjects(domain, btnEl) {
+  const sections = document.querySelectorAll('.proj-domain-section');
+
+  sections.forEach(section => {
+    if (domain === 'all' || section.dataset.domain === domain) {
+      section.style.display = '';
+    } else {
+      section.style.display = 'none';
+    }
+  });
+
+  // Update active tab state
+  document.querySelectorAll('.proj-filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+    btn.setAttribute('aria-selected', 'false');
+  });
+  btnEl.classList.add('active');
+  btnEl.setAttribute('aria-selected', 'true');
+
+  // Scroll to the filter bar (or the matched section) smoothly
+  if (domain !== 'all') {
+    const target = document.querySelector(`.proj-domain-section[data-domain="${domain}"]`);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } else {
+    document.querySelector('.proj-filter-bar').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+  /* ──────────────────────────────────────────
+     CONTACT FORM (AJAX via Formspree)
+  ────────────────────────────────────────── */
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+    const btn     = document.getElementById('submitBtn');
+    const success = document.getElementById('formSuccess');
+    const error   = document.getElementById('formError');
+    success.style.display = 'none';
+    error.style.display   = 'none';
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Sending...';
+
+    try {
+      const res = await fetch(e.target.action, {
+        method: 'POST',
+        body: new FormData(e.target),
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) {
+        success.style.display = 'block';
+        e.target.reset();
+      } else {
+        error.style.display = 'block';
+      }
+    } catch {
+      error.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Send Message';
+    }
+  }
+
+  /* ──────────────────────────────────────────
+     3D TILT ON HERO LOGO PANEL
+  ────────────────────────────────────────── */
   const tiltPanel = document.getElementById('heroTiltPanel');
   const tiltStage = document.querySelector('.skeu-hero');
   if (tiltPanel && tiltStage) {
@@ -226,9 +1737,7 @@
       const rect = tiltStage.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-      const rotY = x * 22;
-      const rotX = -y * 14;
-      tiltPanel.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(20px)`;
+      tiltPanel.style.transform = `rotateY(${x * 22}deg) rotateX(${-y * 14}deg) translateZ(20px)`;
       tiltPanel.style.animation = 'none';
     });
     tiltStage.addEventListener('mouseleave', () => {
@@ -236,6 +1745,16 @@
       tiltPanel.style.animation = 'panel-float-3d 6s ease-in-out infinite';
     });
   }
+
+  /* ──────────────────────────────────────────
+     NAVBAR SCROLL SHADOW
+  ────────────────────────────────────────── */
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').style.boxShadow =
+      window.scrollY > 40
+        ? '0 4px 18px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.5) inset'
+        : '0 3px 10px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.6) inset';
+  }, { passive: true });
 </script>
 
 </body>
