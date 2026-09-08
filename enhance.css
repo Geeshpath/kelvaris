@@ -1,0 +1,140 @@
+/* ============================================================
+   KELVARIS TECHNOLOGIES — Polish Layer
+   Small, additive layer on top of style.css + skeu-3d.css.
+   Adds smooth scrolling, scroll-reveal, refined focus states,
+   a themed scrollbar/selection, and a couple of modern touches
+   (back-to-top button, proj-card tilt) that the base system
+   doesn't cover yet. Include this LAST, after skeu-3d.css.
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Respect users who don't want motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  animation: kv-page-fade 0.5s ease both;
+}
+@keyframes kv-page-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+::selection {
+  background: var(--amber-glow);
+  color: var(--navy);
+}
+
+/* Themed scrollbar (WebKit + Firefox) */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--cream-dark); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--amber-glow), var(--amber-dark));
+  border-radius: 8px;
+  border: 2px solid var(--cream-dark);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--amber-glow); }
+* { scrollbar-color: var(--amber-dark) var(--cream-dark); scrollbar-width: thin; }
+
+/* Clear, on-brand focus ring for keyboard users */
+a:focus-visible,
+button:focus-visible,
+.form-control-skeu:focus-visible {
+  outline: 2px solid var(--amber-glow);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   SCROLL-REVEAL
+   Elements get class="reveal" (optionally reveal-1..reveal-4
+   for a staggered delay); script.js flips .in when they enter
+   the viewport.
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(.2,.7,.3,1), transform 0.65s cubic-bezier(.2,.7,.3,1);
+  will-change: opacity, transform;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+.reveal-1.in { transition-delay: .06s; }
+.reveal-2.in { transition-delay: .12s; }
+.reveal-3.in { transition-delay: .18s; }
+.reveal-4.in { transition-delay: .24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ============================================================
+   PROJECT CARDS — bring them up to the same 3D-tilt feel as
+   .skeu-card, since skeu-3d.css doesn't target them yet.
+   ============================================================ */
+.proj-card {
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(.2,.8,.3,1), box-shadow 0.35s;
+  will-change: transform;
+}
+.proj-card:hover {
+  transform: translateY(-8px) translateZ(16px) rotateX(3deg) rotateY(-2deg);
+  box-shadow: var(--depth-shadow), -2px -2px 8px rgba(255,255,255,0.25) inset;
+}
+
+/* ============================================================
+   MOBILE NAV — fade + slide the panel in instead of a hard
+   display:none → flex snap.
+   ============================================================ */
+@media (max-width: 900px) {
+  .nav-links.open {
+    animation: kv-nav-in 0.25s ease both;
+  }
+  @keyframes kv-nav-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* ============================================================
+   BACK TO TOP
+   ============================================================ */
+.back-to-top {
+  position: fixed;
+  right: 26px;
+  bottom: 96px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel-grad);
+  border: 2px solid var(--navy-mid);
+  color: var(--amber-glow);
+  font-size: 1rem;
+  box-shadow: var(--shadow-deep);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 999;
+  cursor: pointer;
+}
+.back-to-top.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.back-to-top:hover {
+  border-color: var(--amber);
+  color: var(--amber-glow);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 600px) {
+  .back-to-top { right: 18px; bottom: 84px; width: 40px; height: 40px; }
+}

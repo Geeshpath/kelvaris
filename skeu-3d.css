@@ -1,0 +1,2 @@
+/* Kelvaris 3D enhancement layer. Kept lightweight so the site has no dependency on the old theme. */
+.skeu-card,.proj-card,.team-card,.contact-info-block,.about-panel,.skeu-form-panel{transform-style:preserve-3d;}
